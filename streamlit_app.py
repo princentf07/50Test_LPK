@@ -8,7 +8,7 @@ import altair as alt   # 🔥 WAJIB
 # KONFIGURASI HALAMAN
 # =====================================================
 st.set_page_config(
-    page_title="Penentuan Nilai Probit",
+    page_title="IC50Test",
     layout="wide"
 )
 
