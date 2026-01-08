@@ -8,7 +8,7 @@ import altair as alt   # 🔥 WAJIB
 # KONFIGURASI HALAMAN
 # =====================================================
 st.set_page_config(
-    page_title="IC50Test",
+    page_title="50 Test",
     layout="wide"
 )
 
@@ -173,14 +173,27 @@ if menu == "LC50 Probit":
 
         df = pd.DataFrame({
             "Log Konsentrasi": logk,
+            "% Mortalitas": persen,
             "Probit": prob
         })
-        st.line_chart(df.set_index("Log Konsentrasi"))
+        st.dataframe(df.round(4), use_container_width=True)
 
         a,b = regresi_linier(logk, prob)
-        lc50 = 10 ** ((5 - b)/a)
-        st.success(f"LC₅₀ = {lc50:.4f}")
+        r,r2 = korelasi(logk, prob)
 
+        lc50 = 10 ** ((5 - b)/a)
+
+        st.success(f"LC₅₀ = {lc50:.4f}")
+        st.info(f"Probit = {a:.4f} logC + {b:.4f}")
+        st.info(f"r = {r:.4f} | R² = {r2:.4f}")
+
+        st.session_state.riwayat.append({
+            "Jenis":"LC50",
+            "LC50":lc50,
+            "Slope":a,
+            "Intercept":b,
+            "r":r
+        })
 # =====================================================
 # IC50 / EC50 + GRAFIK + REGRESI
 # =====================================================
